@@ -1,14 +1,54 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta http-equiv="refresh" content="0; url=youtube://www.youtube.com/@The_AbhishekMahto">
-<script>
-    window.location = "youtube://www.youtube.com/@The_AbhishekMahto";
-    setTimeout(function(){
-        window.location = "https://www.youtube.com/@The_AbhishekMahto";
-    }, 100);
-</script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Open in YouTube</title>
+  <meta http-equiv="refresh" content="0; url=https://www.youtube.com/@The_AbhishekMahto" />
+  <style>
+    body{display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;background:#111;color:#eee}
+    .msg{max-width:560px;text-align:center;padding:20px;border-radius:12px}
+    a{color:#1ea7ff}
+  </style>
 </head>
 <body>
+  <div class="msg">
+    <h2>Opening YouTube…</h2>
+    <p>If nothing happens, <a id="web" href="https://www.youtube.com/@The_AbhishekMahto" target="_blank" rel="noopener">open in browser</a>.</p>
+    <p style="font-size:13px;color:#bbb">If Instagram opens this page instead of the YouTube app, tap the three dots (⋯) → Open in Browser, then tap the link above.</p>
+  </div>
+
+  <script>
+    (function(){
+      // 1) Prefer intent (Android) — replace handle or use a video link if you prefer
+      var handle = "The_AbhishekMahto"; // <-- change if needed
+      var videoId = ""; // <-- OR put a VIDEOID like "abcd1234" to direct to a video
+      var webUrl = videoId ? "https://youtu.be/" + videoId : "https://www.youtube.com/@" + handle;
+      var intentUrl = videoId
+        ? "intent://www.youtube.com/watch?v=" + videoId + "#Intent;package=com.google.android.youtube;scheme=https;end"
+        : "intent://www.youtube.com/@" + handle + "#Intent;package=com.google.android.youtube;scheme=https;end";
+
+      // 2) Try intent (Android Chrome will open app)
+      try {
+        window.location = intentUrl;
+      } catch(e){}
+
+      // 3) After short delay try youtube:// (deep link scheme)
+      setTimeout(function(){
+        try {
+          var scheme = videoId ? "youtube://www.youtube.com/watch?v=" + videoId : "youtube://www.youtube.com/@" + handle;
+          window.location = scheme;
+        } catch(e){}
+      }, 300);
+
+      // 4) Final fallback to web URL after a bit more delay
+      setTimeout(function(){
+        window.location = webUrl;
+      }, 1200);
+
+      // update visible web link too
+      document.getElementById('web').href = webUrl;
+    })();
+  </script>
 </body>
 </html>
