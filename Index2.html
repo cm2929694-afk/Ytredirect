@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Open in YouTube</title>
+  <meta http-equiv="refresh" content="0; url=https://youtu.be/VIDEOID" />
+  <style>
+    body{display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;background:#111;color:#eee}
+    .msg{max-width:560px;text-align:center;padding:20px;border-radius:12px}
+    a{color:#1ea7ff}
+  </style>
+</head>
+<body>
+  <div class="msg">
+    <h2>Opening YouTube…</h2>
+    <p>If nothing happens, <a id="web" href="https://youtu.be/VIDEOID" target="_blank" rel="noopener">open in browser</a>.</p>
+    <p style="font-size:13px;color:#bbb">If Instagram opens this page inside the app, tap the three dots (⋯) → Open in Browser, then tap the link above.</p>
+  </div>
+
+  <script>
+    (function(){
+      // ---- EDIT THESE ----
+      var videoId = "VIDEOID"; // <- replace with your YouTube video id (recommended)
+      var channelHandle = "The_AbhishekMahto"; // <- channel handle (fallback)
+      // --------------------
+      var webUrl = videoId ? "https://youtu.be/" + videoId : "https://www.youtube.com/@" + channelHandle;
+      var intentUrl = videoId
+        ? "intent://www.youtube.com/watch?v=" + videoId + "#Intent;package=com.google.android.youtube;scheme=https;end"
+        : "intent://www.youtube.com/@" + channelHandle + "#Intent;package=com.google.android.youtube;scheme=https;end";
+      var scheme = videoId ? "youtube://www.youtube.com/watch?v=" + videoId : "youtube://www.youtube.com/@" + channelHandle;
+
+      // Try intent (Android)
+      try { window.location = intentUrl; } catch(e){}
+
+      // Then try deep link after short delay
+      setTimeout(function(){
+        try { window.location = scheme; } catch(e){}
+      }, 600);
+
+      // Then final fallback to web after slightly longer delay
+      setTimeout(function(){
+        window.location = webUrl;
+      }, 2200);
+
+      document.getElementById('web').href = webUrl;
+    })();
+  </script>
+</body>
+</html>
